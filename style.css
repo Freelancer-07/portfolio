@@ -10,14 +10,25 @@
 }
 
 :root {
+     /* --angle: 0deg; */
     --bg-color: #111;
     --second-bg-color: #151515;
     --text-color: white;
-    --main-color: #9510ee;
-    /* background: linear-gradient(to right, #9510ee, #f0bf1d);
-   background-clip: text;
-    color: transparent; */
-    --sec-color: linear-gradient(to right, #9510ee, #f0bf1d);
+    --main-color: #8617cf;
+    --hover-bg-color: #e4dfdf;
+    --main-gradient: conic-gradient(from var(--angle),transparent, #d4a017);
+    --hover-gradient: linear-gradient(135deg, white, #f8f9fa);
+}
+
+.lightmode {
+    --bg-color: #f5f5f5;
+    --second-bg-color: #e0e0e0;
+    --text-color: #111111;
+    --main-color: #d4a017;
+    --hover-bg-color: #111;
+    --main-gradient: conic-gradient(from var(--angle),transparent,#8617cf);
+    --hover-gradient: linear-gradient(135deg, #2c2c2c, #1a1a1a);
+
 }
 
 html {
@@ -29,6 +40,42 @@ body {
     background: var(--bg-color);
     color: var(--text-color);
 
+}
+
+#theme-switch {
+    height: 50px;
+    width: 50px;
+    padding: 0;
+    border-radius: 50%;
+    background-color: var(--main-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 100;
+    top: 20px;
+    left: 20px;
+}
+
+#theme-switch svg:last-child {
+    display: none;
+}
+
+.lightmode #theme-switch svg:first-child {
+    display: none;
+}
+
+.lightmode #theme-switch svg:last-child {
+    display: block;
+}
+
+#theme-switch {
+    cursor: pointer;
+}
+
+#theme-switch svg {
+    pointer-events: none;
+    /* Prevents SVG from intercepting clicks */
 }
 
 .header {
@@ -106,14 +153,16 @@ section {
 
 span {
     /* color: var(--main-color); */
-    background: linear-gradient(to right, #9510ee, #f0bf1d, #e42323);
+    background: linear-gradient(to top, #8c21eb, #f0d958);
+
     background-clip: text;
     color: transparent;
 }
 
 .logo span {
     /* color: var(--main-color); */
-    background: linear-gradient(to right, #9510ee, #f0bf1d, #e42323);
+    background: linear-gradient(to bottom, #8c21eb, #f0d958);
+
     background-clip: text;
     color: transparent;
 }
@@ -196,7 +245,7 @@ span {
     font-weight: 600;
     min-width: 200px;
     /* color: var(--main-color); */
-    
+
 }
 
 .text-animation span {
@@ -206,7 +255,7 @@ span {
 .text-animation span::before {
     content: 'Web Developer';
     /* color: var(--main-color); */
-    background: linear-gradient(to right,#e42323, #1095ee, #f0bf1d );
+    background: linear-gradient(to right, #8c21eb, #f0d958);
     background-clip: text;
     color: transparent;
     animation: words 20s infinite;
@@ -291,7 +340,7 @@ span {
     align-items: center;
     gap: 10rem;
     background: var(--second-bg-color);
-    color: white;
+    color: var(--text-color);
 }
 
 .about h2 span {
@@ -335,6 +384,7 @@ span {
 .about-content p {
     font-size: 1.6rem;
     margin: 2rem 0 3rem;
+    color: var(--text-color);
 }
 
 
@@ -375,7 +425,7 @@ span {
 
 .services h2 {
     margin-bottom: 5rem;
-    color: white;
+    color: var(--text-color);
 }
 
 .services-container {
@@ -388,18 +438,55 @@ span {
 .service-box {
     background-color: var(--linear-color);
     color: black;
-    background-color: var(--main-color);
+    background: var(--main-color);
     height: 250px;
     border-radius: 3rem;
     cursor: pointer;
-    transition: .3s ease-in-out;
+    transition: all .3s ease-out;
+    position: relative;
+    z-index: 0;
+}
+@property --angle{
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
 }
 
+.service-box::after,
+.service-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: var(--main-gradient);
+    border-radius: 3rem;
+    padding: 3px;
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.service-box::before {
+    filter: blur(1.5rem);
+}
+/* @keyframes spin{
+    from{
+        --angle: 0deg;
+    }
+    to{
+        --angle: 360deg;
+    }
+} */
+
 .service-box:hover {
-    background-color: #000;
+    background-color: var(--hover-bg-color);
     color: var(--main-color);
     transform: scale(1.03);
 }
+
 
 .service-box .service-info {
     display: flex;
@@ -424,30 +511,30 @@ span {
     margin: auto;
 }
 
-.contact{
+.contact {
     background-color: var(--second-bg-color);
 }
 
-.contact h2{
+.contact h2 {
     margin-bottom: 3rem;
-    color: white;
+    color: var(--text-color);
 }
 
-.contact form{
+.contact form {
     max-width: 70rem;
     margin: 1rem auto;
     text-align: center;
     margin-bottom: 3rem;
 }
 
-.contact form .input-box{
+.contact form .input-box {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
 }
 
 .contact form .input-box input,
-.contact form textarea{
+.contact form textarea {
     width: 100%;
     padding: 1.5rem;
     font-size: 1.6rem;
@@ -458,25 +545,26 @@ span {
     margin: 1rem 0;
     resize: none;
 }
-.contact form .btn{
+
+.contact form .btn {
     margin-top: 2rem;
 }
 
-.footer{
+.footer {
     position: relative;
     bottom: 0;
     width: 100%;
-    padding: 40px 0;  
+    padding: 40px 0;
     background-color: var(--bg-color);
 }
 
-.footer .social{
+.footer .social {
     text-align: center;
     padding-bottom: 25px;
     color: var(--main-color);
 }
 
-.footer .social a{
+.footer .social a {
     font-size: 25px;
     color: var(--main-color);
     border: 2px solid var(--main-color);
@@ -490,14 +578,14 @@ span {
     transition: .3s ease-in-out;
 }
 
-.footer .social a:hover{
+.footer .social a:hover {
     transform: scale(1.2)translateY(-10px);
     background-color: var(--main-color);
     color: var(--text-color);
     box-shadow: 0 0 25px var(--main-color);
 }
 
-.footer ul{
+.footer ul {
     margin-top: 0;
     padding: 0;
     font-size: 18px;
@@ -506,55 +594,77 @@ span {
     text-align: center;
 }
 
-.footer ul li a{
-    color: white;
+.footer ul li a {
+    color: var(--text-color);
     border-bottom: 3px solid var(--main-color);
 }
 
-.footer ul li{
+.footer ul li {
     display: inline-block;
     padding: 0 15px;
 }
 
-.footer .copyright{
+.footer .copyright {
     margin-top: 50px;
     text-align: center;
     font-size: 16px;
-    color: white;
+    color: var(--text-color);
 }
 
 
-@media(max-widht:1285px){
-    html{
+@media(max-width:1285px) {
+    html {
         font-size: 55%;
     }
-    .services-container{
+
+    .services-container {
         padding-bottom: 7rem;
-        grid-template-columns: repeat(2,1fr);
+        grid-template-columns: repeat(2, 1fr);
         margin: 0 5rem;
     }
 }
 
-@media(max-width:991px){
-    header{
+@media(max-width:991px) {
+    header {
         padding: 2rem 3%;
     }
-    section{
+
+    section {
         padding: 10rem 3% 2rem;
     }
-    .services{
+
+    .services {
         padding-bottom: 7rem;
     }
-    .footer{
+
+    .footer {
         padding: 2rem 3%;
+    }
+
+    #theme-switch {
+        top: 20px;
+        /* Move it down below the header */
+        left: 20px;
+        height: 30px;
+        width: 30px;
     }
 }
 
-@media(max-width:895px){
-    #menu-icon{
+@media(max-width:895px) {
+    #menu-icon {
         display: block;
     }
-    .navbar{
+
+    #theme-switch {
+        top: 32px;
+        right: 20px;
+        /* Move to right side on mobile */
+        left: auto;
+        height: 25px;
+        width: 25px;
+    }
+
+    .navbar {
         position: absolute;
         top: 100%;
         right: 0;
@@ -567,49 +677,77 @@ span {
         border-bottom: 2px solid var(--main-color);
         display: none;
     }
-    .navbar .acive{
+
+    .navbar.active {
         display: block;
     }
-    .navbar a{
+
+    .navbar a {
         display: block;
         font-size: 2rem;
         margin: 3rem 0;
         color: white;
     }
-    .home{
+
+    .home {
         flex-direction: column;
         margin: 5rem 4rem;
     }
-    .home-content h3{
+
+    .home-content h3 {
         font-size: 2.6rem;
     }
-    .home-content h1{
+
+    .home-content h1 {
         font-size: 8rem;
         margin-top: 3rem;
     }
-    .home-content p{
+
+    .home-content p {
         max-width: 600px;
         margin: 0 auto;
     }
-    .home-img img{
+
+    .home-img img {
         width: 56vw;
         margin-top: -2rem;
     }
-    .about{
+
+    .about {
         flex-direction: column-reverse;
     }
-    .about-content{
+
+    .about-content {
         margin: 0 2rem 4rem;
     }
-    .about img{
+
+    .about img {
         width: 52vw;
         margin-top: 1rem;
         margin-bottom: 3rem;
     }
-    .services h2{
+
+    .services h2 {
         margin-bottom: 3rem;
     }
-    .services-container{
-        grid-template-columns: repeat(1,1fr);
+
+    .services-container {
+        grid-template-columns: repeat(1, 1fr);
     }
 }
+
+@media(max-width:525px) {
+    #menu-icon {
+        display: block;
+        position: absolute;
+        right: 40px;
+    }
+
+    #theme-switch {
+        top: 32px;
+        right: 15px;
+        /* Move to right side on mobile */
+        left: auto;
+        height: 25px;
+        width: 25px;
+    }
